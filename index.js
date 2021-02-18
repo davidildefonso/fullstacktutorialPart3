@@ -1,8 +1,13 @@
 const { response } = require("express");
 const express = require("express");
 const app = express();
+const cors = require('cors');
+
 
 app.use(express.json());
+
+app.use(cors());
+
 
 let notes = [ 
   {
@@ -44,6 +49,15 @@ app.get("/api/notes/:id",(request,response)=>{
     response.status(404).end();
   }
   
+});
+
+app.put("/api/notes/:id",(request,response)=>{
+  console.log(request.params)
+  console.log(request.body)
+  const id=Number(request.params.id);
+  notes=notes.map(note=>note.id!==id?note:request.body)
+  response.json(request.body);
+  console.log(request.body)
 });
 
 app.delete("/api/notes/:id",(request,response)=>{
